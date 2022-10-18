@@ -32,7 +32,6 @@ defmodule BitcoinAccounting do
 
       %{address: address, history: history}
     end)
-    |> List.first()
   end
 
   defp get_change_index(change?) do
