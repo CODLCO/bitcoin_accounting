@@ -44,7 +44,7 @@ defmodule BitcoinAccounting.MixProject do
   defp deps do
     [
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
-      {:electrum_client, "~> 0.1.3"}
+      {:electrum_client, "~> 0.1.4"}
     ]
   end
 end

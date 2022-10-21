@@ -10,8 +10,6 @@ defmodule BitcoinAccounting.JournalEntries.OutputManager do
   end
 
   defp add_address({:p2pk, pub_key}, network) do
-    Logger.debug("P2PK")
-
     address =
       pub_key
       |> PublicKey.hash()
@@ -21,8 +19,6 @@ defmodule BitcoinAccounting.JournalEntries.OutputManager do
   end
 
   defp add_address({:p2pkh, pub_key_hash}, network) do
-    Logger.debug("P2PKH")
-
     address =
       pub_key_hash
       |> Address.from_public_key_hash(:p2pkh, network)
@@ -31,8 +27,6 @@ defmodule BitcoinAccounting.JournalEntries.OutputManager do
   end
 
   defp add_address({:p2wpkh, pub_key_hash}, network) do
-    Logger.debug("P2WPKH")
-
     address =
       pub_key_hash
       |> Address.from_public_key_hash(:p2wpkh, network)
@@ -41,8 +35,6 @@ defmodule BitcoinAccounting.JournalEntries.OutputManager do
   end
 
   defp add_address({:p2sh, script_hash}, network) do
-    Logger.debug("P2SH")
-
     address =
       <<0x0020::16, script_hash::bitstring-160>>
       |> Address.Bech32.from_script_hash(network)
