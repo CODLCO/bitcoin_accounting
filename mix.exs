@@ -7,6 +7,7 @@ defmodule BitcoinAccounting.MixProject do
     [
       app: :bitcoin_accounting,
       version: @version,
+      description: "From Bitcoin blockchain's data to human understandable format",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -43,6 +44,7 @@ defmodule BitcoinAccounting.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.28", only: :dev, runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
       {:electrum_client, "~> 0.1.4"}
     ]
