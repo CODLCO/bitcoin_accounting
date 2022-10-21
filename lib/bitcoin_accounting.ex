@@ -1,6 +1,8 @@
 defmodule BitcoinAccounting do
-  alias BitcoinLib.Key.{PublicKey, PublicKeyHash, Address}
+  alias BitcoinAccounting.JournalEntries
+  alias BitcoinLib.Key.{PublicKey, Address}
 
+  @spec get_book_entries(binary()) :: list()
   def get_book_entries(xpub) do
     xpub
     |> get_address_range(false, 0..19)
@@ -8,16 +10,17 @@ defmodule BitcoinAccounting do
   end
 
   defp get_address_range(xpub, change?, range) do
+    {:ok, public_key, network, :bip32} = PublicKey.deserialize(xpub)
+
     change_index = get_change_index(change?)
 
     range
     |> Enum.map(fn index ->
-      xpub
-      |> PublicKey.deserialize!()
+      public_key
       |> PublicKey.derive_child!(change_index)
       |> PublicKey.derive_child!(index)
-      |> PublicKeyHash.from_public_key()
-      |> Address.from_public_key_hash(:p2pkh, :testnet)
+      |> PublicKey.hash()
+      |> Address.from_public_key_hash(:p2pkh, network)
     end)
   end
 
@@ -28,6 +31,7 @@ defmodule BitcoinAccounting do
         ElectrumClient.get_address_history(address)
         |> Enum.map(fn history_item ->
           ElectrumClient.get_transaction(history_item.txid)
+          |> JournalEntries.from_transaction(address)
         end)
 
       %{address: address, history: history}
