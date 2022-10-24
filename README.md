@@ -10,7 +10,7 @@ by adding `bitcoin_accounting` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:bitcoin_accounting, "~> 0.1.3"}
+    {:bitcoin_accounting, "~> 0.1.4"}
   ]
 end
 ```
