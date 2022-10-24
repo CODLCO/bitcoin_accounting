@@ -28,3 +28,4 @@ bitcoin_accounting-*.tar
 .DS_Store
 .iex.local.exs
 /local
+/livebooks/in_development
