@@ -15,7 +15,7 @@ port = System.fetch_env!("LB_ELECTRUM_CLIENT_PORT") |> Integer.parse() |> elem(0
 ElectrumClient.start_link(ip, port)
 ```
 
-## Get credits and debits from a upub
+## Get credits and debits from a vpub
 
 ```elixir
 vpub =
