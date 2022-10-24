@@ -35,8 +35,7 @@ defmodule BitcoinAccounting do
       public_key
       |> PublicKey.derive_child!(change_index)
       |> PublicKey.derive_child!(index)
-      |> PublicKey.hash()
-      |> Address.from_public_key_hash(:p2pkh, network)
+      |> Address.from_public_key(:p2pkh, network)
     end)
   end
 
