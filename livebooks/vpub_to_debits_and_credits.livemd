@@ -1,0 +1,25 @@
+# Bitcoin Accounting
+
+```elixir
+Mix.install([
+  {:bitcoin_accounting, "~> 0.1.2"}
+])
+```
+
+## Start the electrum server
+
+```elixir
+ip = System.fetch_env!("LB_ELECTRUM_CLIENT_IP")
+port = System.fetch_env!("LB_ELECTRUM_CLIENT_PORT") |> Integer.parse() |> elem(0)
+
+ElectrumClient.start_link(ip, port)
+```
+
+## Get credits and debits from a upub
+
+```elixir
+vpub =
+  "vpub5ZQ9mcm9jHj3j52uiuhRiFiijB9DDHwiNpC3ppnbQPrmdqjdZN1sJyjStVBDTY2mU3ZFxaoNL3GUKAUARQk27xN3LW79ptfooLR7AiH6pHa"
+
+BitcoinAccounting.get_book_entries(vpub)
+```
