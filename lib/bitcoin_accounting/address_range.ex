@@ -11,6 +11,9 @@ defmodule BitcoinAccounting.AddressRange do
       {:ok, public_key, network, :bip49} ->
         get_bip49_address_range(public_key, network, change?, range)
 
+      {:ok, public_key, network, :bip84} ->
+        get_bip84_address_range(public_key, network, change?, range)
+
       {:error, message} ->
         Logger.error(message)
 
@@ -40,6 +43,18 @@ defmodule BitcoinAccounting.AddressRange do
       |> PublicKey.derive_child!(change_index)
       |> PublicKey.derive_child!(index)
       |> Address.from_public_key(:p2sh, network)
+    end)
+  end
+
+  defp get_bip84_address_range(public_key, network, change?, range) do
+    change_index = get_change_index(change?)
+
+    range
+    |> Enum.map(fn index ->
+      public_key
+      |> PublicKey.derive_child!(change_index)
+      |> PublicKey.derive_child!(index)
+      |> Address.from_public_key(:bech32, network)
     end)
   end
 

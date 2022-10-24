@@ -29,7 +29,7 @@ defmodule BitcoinAccounting.JournalEntries.OutputManager do
   defp add_address({:p2wpkh, pub_key_hash}, network) do
     address =
       pub_key_hash
-      |> Address.from_public_key_hash(:p2wpkh, network)
+      |> Address.Bech32.from_public_key_hash(network)
 
     {:p2wpkh, pub_key_hash, address}
   end
