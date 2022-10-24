@@ -2,7 +2,7 @@
 
 ```elixir
 Mix.install([
-  {:bitcoin_accounting, "~> 0.1.2"}
+  {:bitcoin_accounting, "~> 0.1.4"}
 ])
 ```
 
