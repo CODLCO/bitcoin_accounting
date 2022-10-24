@@ -1,4 +1,6 @@
 defmodule BitcoinAccounting do
+  require Logger
+
   alias BitcoinAccounting.JournalEntries
   alias BitcoinLib.Key.{PublicKey, Address}
 
@@ -10,8 +12,19 @@ defmodule BitcoinAccounting do
   end
 
   defp get_address_range(xpub, change?, range) do
-    {:ok, public_key, network, :bip32} = PublicKey.deserialize(xpub)
+    case PublicKey.deserialize(xpub) do
+      {:ok, public_key, network, :bip32} ->
+        get_bip32_address_range(public_key, network, change?, range)
 
+      {:error, message} ->
+        Logger.error(message)
+
+      unknown ->
+        Logger.error(unknown |> inspect)
+    end
+  end
+
+  defp get_bip32_address_range(public_key, network, change?, range) do
     change_index = get_change_index(change?)
 
     range
