@@ -5,51 +5,45 @@ defmodule BitcoinAccounting.JournalEntries do
 
   @spec from_transaction(%Transaction{}, binary()) :: map()
   def from_transaction(%Transaction{} = transaction, address) do
-    extracted =
-      %{transaction: transaction, address: address}
-      |> extract_inputs()
-      |> extract_outputs()
-      |> classify_inputs()
-      |> classify_outputs()
-      |> filter_inputs()
-      |> filter_outputs()
-      |> create_debits()
-      |> create_credits()
+    credits = get_credits(transaction, address)
+    debits = get_debits(transaction, address)
 
     %{
-      txid: extracted.transaction.id,
-      credits: extracted.credits,
-      debits: extracted.debits
+      txid: transaction.id,
+      credits: credits,
+      debits: debits
     }
   end
 
-  defp extract_inputs(%{transaction: %Transaction{inputs: inputs}} = hash) do
-    inputs =
-      inputs
-      |> Enum.map(fn input ->
-        input.txid
-        |> ElectrumClient.get_transaction()
-        |> Map.get(:outputs)
-        |> Enum.at(input.vout)
-      end)
-
-    Map.put(hash, :inputs, inputs)
+  defp get_debits(transaction, address) do
+    transaction
+    |> extract_inputs()
+    |> classify(address)
+    |> filter_address(address)
+    |> get_value()
   end
 
-  defp extract_outputs(%{transaction: transaction} = hash) do
-    outputs =
-      transaction
+  defp get_credits(transaction, address) do
+    transaction
+    |> extract_outputs()
+    |> classify(address)
+    |> filter_address(address)
+    |> get_value()
+  end
+
+  defp extract_inputs(transaction) do
+    transaction
+    |> Map.get(:inputs)
+    |> Enum.map(fn input ->
+      input.txid
+      |> ElectrumClient.get_transaction()
       |> Map.get(:outputs)
-
-    Map.put(hash, :outputs, outputs)
+      |> Enum.at(input.vout)
+    end)
   end
 
-  defp classify_inputs(%{inputs: inputs, address: address} = hash) do
-    %{hash | inputs: classify(inputs, address)}
-  end
-
-  defp classify_outputs(%{outputs: outputs, address: address} = hash) do
-    %{hash | outputs: classify(outputs, address)}
+  defp extract_outputs(transaction) do
+    Map.get(transaction, :outputs)
   end
 
   defp classify(outputs, address) do
@@ -66,19 +60,11 @@ defmodule BitcoinAccounting.JournalEntries do
     end)
   end
 
-  defp filter_inputs(%{inputs: inputs, address: address} = hash) do
-    %{hash | inputs: Enum.filter(inputs, &(&1.address == address))}
+  defp filter_address(inputs, address) do
+    Enum.filter(inputs, &(&1.address == address))
   end
 
-  defp filter_outputs(%{outputs: outputs, address: address} = hash) do
-    %{hash | outputs: Enum.filter(outputs, &(&1.address == address))}
-  end
-
-  defp create_debits(%{inputs: inputs} = hash) do
-    Map.put(hash, :debits, Enum.map(inputs, & &1.value))
-  end
-
-  defp create_credits(%{outputs: outputs} = hash) do
-    Map.put(hash, :credits, Enum.map(outputs, & &1.value))
+  defp get_value(inputs) do
+    Enum.map(inputs, & &1.value)
   end
 end
