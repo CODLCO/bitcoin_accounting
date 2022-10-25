@@ -8,20 +8,20 @@ defmodule BitcoinAccounting do
     |> extract_book_entries()
   end
 
-  defp extract_book_entries(address_range) do
-    address_range
-    |> Enum.map(fn address ->
-      history = get_history(address)
-
-      %{address: address, history: history}
-    end)
-  end
-
-  defp get_history(address) do
+  def get_address_history(address) do
     address
     |> ElectrumClient.get_address_history()
     |> Enum.map(fn history_item ->
       get_journal_entries(history_item, address)
+    end)
+  end
+
+  defp extract_book_entries(address_range) do
+    address_range
+    |> Enum.map(fn address ->
+      history = get_address_history(address)
+
+      %{address: address, history: history}
     end)
   end
 
