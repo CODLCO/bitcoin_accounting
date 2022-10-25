@@ -11,14 +11,22 @@ defmodule BitcoinAccounting do
   defp extract_book_entries(address_range) do
     address_range
     |> Enum.map(fn address ->
-      history =
-        ElectrumClient.get_address_history(address)
-        |> Enum.map(fn history_item ->
-          ElectrumClient.get_transaction(history_item.txid)
-          |> JournalEntries.from_transaction_request(address)
-        end)
+      history = get_history(address)
 
       %{address: address, history: history}
     end)
+  end
+
+  defp get_history(address) do
+    address
+    |> ElectrumClient.get_address_history()
+    |> Enum.map(fn history_item ->
+      get_journal_entries(history_item, address)
+    end)
+  end
+
+  defp get_journal_entries(%{txid: transaction_id}, address) do
+    ElectrumClient.get_transaction(transaction_id)
+    |> JournalEntries.from_transaction_request(address)
   end
 end
