@@ -3,13 +3,24 @@ defmodule BitcoinAccounting.JournalEntries do
   alias BitcoinLib.Key.Address
   alias BitcoinAccounting.JournalEntries.OutputManager
 
-  @spec from_transaction(%Transaction{}, binary()) :: map()
-  def from_transaction(%Transaction{} = transaction, address) do
+  @spec from_transaction_request(%Transaction{}, binary()) :: map()
+  def from_transaction_request(
+        %{
+          block_hash: _block_hash,
+          time: time,
+          confirmations: confirmations,
+          vsize: _vsize,
+          transaction: %Transaction{} = transaction
+        },
+        address
+      ) do
     credits = get_credits(transaction, address)
     debits = get_debits(transaction, address)
 
     %{
       txid: transaction.id,
+      time: time,
+      confirmations: confirmations,
       credits: credits,
       debits: debits
     }
@@ -35,8 +46,10 @@ defmodule BitcoinAccounting.JournalEntries do
     transaction
     |> Map.get(:inputs)
     |> Enum.map(fn input ->
-      input.txid
+      input
+      |> Map.get(:txid)
       |> ElectrumClient.get_transaction()
+      |> Map.get(:transaction)
       |> Map.get(:outputs)
       |> Enum.at(input.vout)
     end)

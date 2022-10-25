@@ -15,7 +15,7 @@ defmodule BitcoinAccounting do
         ElectrumClient.get_address_history(address)
         |> Enum.map(fn history_item ->
           ElectrumClient.get_transaction(history_item.txid)
-          |> JournalEntries.from_transaction(address)
+          |> JournalEntries.from_transaction_request(address)
         end)
 
       %{address: address, history: history}
