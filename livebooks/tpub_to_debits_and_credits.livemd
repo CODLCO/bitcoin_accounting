@@ -2,7 +2,7 @@
 
 ```elixir
 Mix.install([
-  {:bitcoin_accounting, "~> 0.1.1"}
+  {:bitcoin_accounting, "~> 0.1.5"}
 ])
 ```
 
@@ -15,7 +15,7 @@ port = System.fetch_env!("LB_ELECTRUM_CLIENT_PORT") |> Integer.parse() |> elem(0
 ElectrumClient.start_link(ip, port)
 ```
 
-## Get credits and debits from an xpub
+## Get credits and debits from a tpub
 
 ```elixir
 xpub =
