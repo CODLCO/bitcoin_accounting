@@ -1,7 +1,8 @@
 defmodule BitcoinAccounting.AddressRange do
   require Logger
 
-  alias BitcoinLib.Key.{PublicKey, Address}
+  alias BitcoinLib.Address
+  alias BitcoinLib.Key.{PublicKey}
 
   def get_address_range(xpub, change?, range) do
     case PublicKey.deserialize(xpub) do

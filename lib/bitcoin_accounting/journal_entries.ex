@@ -1,6 +1,5 @@
 defmodule BitcoinAccounting.JournalEntries do
-  alias BitcoinLib.Transaction
-  alias BitcoinLib.Key.Address
+  alias BitcoinLib.{Address, Transaction}
   alias BitcoinAccounting.JournalEntries.OutputManager
 
   @spec from_transaction_request(%Transaction{}, binary()) :: map()
