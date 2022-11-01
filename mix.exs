@@ -1,7 +1,7 @@
 defmodule BitcoinAccounting.MixProject do
   use Mix.Project
 
-  @version "0.1.8"
+  @version "0.1.9"
 
   def project do
     [
@@ -46,7 +46,7 @@ defmodule BitcoinAccounting.MixProject do
     [
       {:ex_doc, "~> 0.28", only: :dev, runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
-      {:electrum_client, "~> 0.1.13"}
+      {:electrum_client, "~> 0.1.14"}
     ]
   end
 end
