@@ -2,9 +2,9 @@ defmodule BitcoinAccounting do
   alias BitcoinAccounting.{AddressRange, JournalEntries}
 
   @spec get_book_entries(binary()) :: list()
-  def get_book_entries(xpub) do
+  def get_book_entries(xpub, change_chain? \\ false) do
     xpub
-    |> AddressRange.get_address_range(false, 0..19)
+    |> AddressRange.get_address_range(change_chain?, 0..19)
     |> extract_book_entries()
   end
 
