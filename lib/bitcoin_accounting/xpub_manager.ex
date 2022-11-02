@@ -1,5 +1,6 @@
 defmodule BitcoinAccounting.XpubManager do
-  alias BitcoinAccounting.{AddressManager, AddressRange}
+  alias BitcoinAccounting.XpubManager.AddressRange
+  alias BitcoinAccounting.{AddressManager}
 
   def get_receive_entries(xpub, empty_address_count) do
     get_entries(xpub, false, empty_address_count)

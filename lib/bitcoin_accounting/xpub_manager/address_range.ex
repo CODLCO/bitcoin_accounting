@@ -1,4 +1,4 @@
-defmodule BitcoinAccounting.AddressRange do
+defmodule BitcoinAccounting.XpubManager.AddressRange do
   require Logger
 
   alias BitcoinLib.Address

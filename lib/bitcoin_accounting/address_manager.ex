@@ -1,5 +1,5 @@
 defmodule BitcoinAccounting.AddressManager do
-  alias BitcoinAccounting.{JournalEntries}
+  alias BitcoinAccounting.AddressManager.JournalEntries
 
   def get_history(address) do
     address

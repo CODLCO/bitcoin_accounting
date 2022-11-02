@@ -1,4 +1,4 @@
-defmodule BitcoinAccounting.JournalEntries.OutputManager do
+defmodule BitcoinAccounting.AddressManager.JournalEntries.OutputManager do
   require Logger
 
   alias BitcoinLib.{Address, Script}
