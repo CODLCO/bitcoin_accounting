@@ -3,12 +3,10 @@ defmodule BitcoinAccounting.XpubManager do
   alias BitcoinAccounting.{AddressManager}
 
   def get_receive_entries(xpub, empty_address_request) do
-    IO.puts("receive")
     get_entries(xpub, [], false, empty_address_request)
   end
 
   def get_change_entries(xpub, empty_address_request) do
-    IO.puts("change")
     get_entries(xpub, [], true, empty_address_request)
   end
 
