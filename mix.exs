@@ -1,7 +1,7 @@
 defmodule BitcoinAccounting.MixProject do
   use Mix.Project
 
-  @version "0.1.12"
+  @version "0.1.13"
 
   def project do
     [
@@ -12,7 +12,8 @@ defmodule BitcoinAccounting.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       docs: docs(),
-      package: package()
+      package: package(),
+      elixirc_paths: elixirc_paths(Mix.env())
     ]
   end
 
@@ -46,7 +47,11 @@ defmodule BitcoinAccounting.MixProject do
     [
       {:ex_doc, "~> 0.28", only: :dev, runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
-      {:electrum_client, "~> 0.1.14"}
+      {:hammox, "~> 0.7", only: [:test]},
+      {:electrum_client, "~> 0.1.15"}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 end

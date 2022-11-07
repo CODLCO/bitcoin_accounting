@@ -2,6 +2,8 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
   alias BitcoinLib.{Address, Transaction}
   alias BitcoinAccounting.AddressManager.JournalEntries.OutputManager
 
+  @electrum_client Application.compile_env!(:bitcoin_accounting, :electrum_client)
+
   @spec from_transaction_request(%Transaction{}, binary()) :: map()
   def from_transaction_request(
         %{
@@ -47,7 +49,7 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
     |> Enum.map(fn input ->
       input
       |> Map.get(:txid)
-      |> ElectrumClient.get_transaction()
+      |> @electrum_client.get_transaction()
       |> Map.get(:transaction)
       |> Map.get(:outputs)
       |> Enum.at(input.vout)
