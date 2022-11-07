@@ -4,7 +4,7 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
 
   @electrum_client Application.compile_env!(:bitcoin_accounting, :electrum_client)
 
-  @spec from_transaction_request(%Transaction{}, binary()) :: map()
+  @spec from_transaction_request(map(), binary()) :: map()
   def from_transaction_request(
         %{
           block_hash: _block_hash,

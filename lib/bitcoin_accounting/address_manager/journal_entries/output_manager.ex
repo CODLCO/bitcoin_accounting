@@ -2,21 +2,14 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries.OutputManager do
   require Logger
 
   alias BitcoinLib.{Address, Script}
-  alias BitcoinLib.Key.{PublicKey}
 
   def identify_script_type(output, network) do
     Script.identify(output.script_pub_key)
     |> add_address(network)
   end
 
-  ## TODO: seems like there's a mix of P2PK and P2PKH here, fix this
-  defp add_address({:p2pk, pub_key}, network) do
-    address =
-      pub_key
-      |> PublicKey.hash()
-      |> Address.from_public_key_hash(network)
-
-    {:p2pk, pub_key, address}
+  defp add_address({:p2pk, pub_key}, _network) do
+    {:p2pk, pub_key, pub_key}
   end
 
   defp add_address({:p2pkh, pub_key_hash}, network) do
