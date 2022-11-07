@@ -3,7 +3,7 @@ defmodule BitcoinAccounting do
 
   @get_book_entries_defaults %{empty_address_count: 20}
 
-  @spec get_book_entries(binary(), list()) :: list()
+  @spec get_book_entries(binary(), list()) :: %{receive: list(), change: list()}
   def get_book_entries(xpub, opts \\ []) do
     %{empty_address_count: empty_address_count} = Enum.into(opts, @get_book_entries_defaults)
 
