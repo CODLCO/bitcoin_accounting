@@ -128,10 +128,10 @@ defmodule BitcoinAccounting.AppleJuice do
   end
 
   # movement is either inputs or outputs
-  def classify(movement, address) do
+  def classify(movements, address) do
     {:ok, _, _key_type, network} = Address.destructure(address)
 
-    movement
+    movements
     |> Enum.map(fn movement ->
       {script_type, script_value, address} = OutputManager.identify_script_type(movement, network)
 
