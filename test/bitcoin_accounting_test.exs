@@ -23,6 +23,11 @@ defmodule BitcoinAccountingTest do
   describe "get_book_entries/1" do
     @tag :integration
     test "returns book entries" do
+      entries =
+        BitcoinAccounting.get_book_entries(
+          "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8"
+        )
+
       assert %{
                change: [
                  %{address: "1NwEtFZ6Td7cpKaJtYoeryS6avP2TUkSMh", history: []},
@@ -51,56 +56,56 @@ defmodule BitcoinAccountingTest do
                    address: "12CL4K2eVqj7hQTix7dM7CVHCkpP17Pry3",
                    history: [
                      %{
-                       confirmations: 480_623,
+                       confirmations: confirmations,
                        credits: [12822],
                        debits: [],
                        time: ~U[2014-01-24 23:23:12Z],
                        txid: "1b3aa619f7fee859eb78ead57fefb8f0ca0eba050f7a3cec072b5bdab1ebe910"
                      },
                      %{
-                       confirmations: 480_175,
+                       confirmations: _,
                        credits: [],
                        debits: [12822],
                        time: ~U[2014-01-27 18:47:22Z],
                        txid: "a33bedac862a5f7cbe053e2342ed71a7ad9f93388789d32b0242d2020c977ddc"
                      },
                      %{
-                       confirmations: 419_627,
+                       confirmations: _,
                        credits: [50000],
                        debits: [],
                        time: ~U[2015-02-13 15:50:42Z],
                        txid: "5df57e14b5cd1704f36723a9addc721c7eb9df6f67b32479bb0e6668d6d04f61"
                      },
                      %{
-                       confirmations: 419_622,
+                       confirmations: _,
                        credits: [],
                        debits: [50000],
                        time: ~U[2015-02-13 16:55:20Z],
                        txid: "714b79953a6b7a0499d19196353eacbf47690a281b0998b0ff9981945e34a8d9"
                      },
                      %{
-                       confirmations: 397_203,
+                       confirmations: _,
                        credits: [17936],
                        debits: [],
                        time: ~U[2015-07-17 16:22:20Z],
                        txid: "8615c3852c43074c1b335650ffe08428b0760bc30416f7a7ad8c90a01f77f4a5"
                      },
                      %{
-                       confirmations: 397_197,
+                       confirmations: _,
                        credits: [],
                        debits: [17936],
                        time: ~U[2015-07-17 17:10:05Z],
                        txid: "536160170732da68c9744a22ef2a9196f44ac4877f9cf2fae9002823fbcfafbf"
                      },
                      %{
-                       confirmations: 368_382,
+                       confirmations: _,
                        credits: [10000],
                        debits: [],
                        time: ~U[2016-01-23 01:22:55Z],
                        txid: "19a195d273b200976dc21f09808907f24c1c850ad7c7409992bac67fe85e4984"
                      },
                      %{
-                       confirmations: 368_340,
+                       confirmations: _,
                        credits: [],
                        debits: [10000],
                        time: ~U[2016-01-23 08:07:23Z],
@@ -120,14 +125,14 @@ defmodule BitcoinAccountingTest do
                    address: "15MbJzwHGPq5ETKLBp3yPHoxQ5GUB9avyS",
                    history: [
                      %{
-                       confirmations: 419_727,
+                       confirmations: _,
                        credits: [50000],
                        debits: [],
                        time: ~U[2015-02-13 00:37:09Z],
                        txid: "afdbc8e98cbf58e754e75d4b70ec223a0c4d207dfa8648b4c35bfa83a89436a2"
                      },
                      %{
-                       confirmations: 419_726,
+                       confirmations: _,
                        credits: [],
                        debits: [50000],
                        time: ~U[2015-02-13 00:43:40Z],
@@ -151,14 +156,14 @@ defmodule BitcoinAccountingTest do
                    address: "16nWB7Si2hTUtqi71dXtFBreScGWfhyNnm",
                    history: [
                      %{
-                       confirmations: 516_460,
+                       confirmations: _,
                        credits: [100_000],
                        debits: [],
                        time: ~U[2013-07-14 04:00:52Z],
                        txid: "36b92e05aa5aeb4ca09393185b49a558cdad8870c0e0e53b3e041d95628a9761"
                      },
                      %{
-                       confirmations: 516_455,
+                       confirmations: _,
                        credits: [],
                        debits: [100_000],
                        time: ~U[2013-07-14 04:34:59Z],
@@ -171,28 +176,28 @@ defmodule BitcoinAccountingTest do
                    address: "1JEYhhAGC2JkLJhdnC1tWk2CtH64sX2Ur8",
                    history: [
                      %{
-                       confirmations: 516_446,
+                       confirmations: _,
                        credits: [110_000],
                        debits: [],
                        time: ~U[2013-07-14 05:57:54Z],
                        txid: "ca1910e01ed32e7a9408b7e9e99f39bd4ef6be1911a1fb5a3d5533fa01f61df6"
                      },
                      %{
-                       confirmations: 516_444,
+                       confirmations: _,
                        credits: [],
                        debits: [110_000],
                        time: ~U[2013-07-14 06:18:53Z],
                        txid: "884a2eb058b4360cbc5a4fa8131f3e0ec34aff5c635e34feb3c457d12d0bc93d"
                      },
                      %{
-                       confirmations: 253_931,
+                       confirmations: _,
                        credits: [67396],
                        debits: [],
                        time: ~U[2018-02-13 13:52:16Z],
                        txid: "a0a7e1bb6460bffed958bc80d74966be14fdec09608408de351053d1e8d653a1"
                      },
                      %{
-                       confirmations: 253_926,
+                       confirmations: _,
                        credits: [],
                        debits: [67396],
                        time: ~U[2018-02-13 14:29:00Z],
@@ -236,10 +241,11 @@ defmodule BitcoinAccountingTest do
                  %{address: "18p9HLmb869SECTiHpAvhuPdV3AV1VFy3C", history: []},
                  %{address: "16fYQGY4CgQqkgjerDKE878PZr6Um4Y9PR", history: []}
                ]
-             } ==
-               BitcoinAccounting.get_book_entries(
-                 "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8"
-               )
+             } = entries
+
+      assert confirmations > 480_622
+      history_item = hd(hd(entries.receive).history)
+      assert Map.keys(history_item) == [:confirmations, :credits, :debits, :time, :txid]
     end
   end
 
@@ -247,7 +253,6 @@ defmodule BitcoinAccountingTest do
     @tag :integration
     test "returns address history" do
       history = BitcoinAccounting.get_address_history("12CL4K2eVqj7hQTix7dM7CVHCkpP17Pry3")
-
 
       assert [
                %{
@@ -308,8 +313,8 @@ defmodule BitcoinAccountingTest do
                }
              ] = history
 
-             assert confirmations > 480622
-             assert Map.keys(hd(history)) == [:confirmations, :credits, :debits, :time, :txid]
+      assert confirmations > 480_622
+      assert Map.keys(hd(history)) == [:confirmations, :credits, :debits, :time, :txid]
     end
   end
 end
