@@ -36,6 +36,14 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries.OutputManager do
     {:p2sh, script_hash, address}
   end
 
+  defp add_address({:p2wsh, script_hash}, network) do
+    address =
+      script_hash
+      |> Address.P2SH.from_script_hash(network)
+
+    {:p2wsh, script_hash, address}
+  end
+
   defp add_address({:bech32, script_hash}, network) do
     address =
       <<0x0020::16, script_hash::bitstring-160>>
