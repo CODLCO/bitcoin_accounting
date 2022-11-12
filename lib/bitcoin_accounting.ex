@@ -1,6 +1,6 @@
 defmodule BitcoinAccounting do
   alias BitcoinAccounting.{AddressManager, XpubManager}
-
+  alias BitcoinAccounting.AddressManager.JournalEntries
   @get_book_entries_defaults %{empty_address_count: 20}
 
   @spec get_book_entries(binary(), list()) :: %{receive: list(), change: list()}
@@ -14,6 +14,13 @@ defmodule BitcoinAccounting do
   end
 
   def get_address_history(address) do
-    AddressManager.get_history(address)
+
+
+
+    address
+    |> AddressManager.history_for()
+    |> Enum.map(fn history_item ->
+        JournalEntries.from_transaction_request(history_item, address)
+    end)
   end
 end

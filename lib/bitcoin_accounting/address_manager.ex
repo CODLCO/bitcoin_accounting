@@ -1,11 +1,15 @@
 defmodule BitcoinAccounting.AddressManager do
-  alias BitcoinAccounting.AddressManager.JournalEntries
+  def history_for(address_range) when is_list(address_range) do
+    Enum.map(address_range, &history_for/1)
+  end
 
-  def get_history(address) do
+  def history_for(address) when is_binary(address) do
     address
     |> ElectrumClient.get_address_history()
-    |> Enum.map(fn history_item ->
-      get_journal_entries(history_item, address)
+    |> Enum.map(fn %{txid: transaction_id} ->
+      transaction_id
+      |> ElectrumClient.get_transaction()
+      |> Map.put(:tx_id, transaction_id)
     end)
   end
 
@@ -17,13 +21,8 @@ defmodule BitcoinAccounting.AddressManager do
   end
 
   def extract_book_entries(address) when is_binary(address) do
-    history = get_history(address)
+    history = history_for(address)
 
     %{address: address, history: history}
-  end
-
-  defp get_journal_entries(%{txid: transaction_id}, address) do
-    ElectrumClient.get_transaction(transaction_id)
-    |> JournalEntries.from_transaction_request(address)
   end
 end
