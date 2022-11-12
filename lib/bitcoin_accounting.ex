@@ -15,6 +15,7 @@ defmodule BitcoinAccounting do
   def get_address_history(address) do
     address
     |> AddressManager.history_for()
+    |> Map.get(:history)
     |> Enum.map(fn history_item ->
       JournalEntries.from_transaction_request(history_item, address)
     end)
