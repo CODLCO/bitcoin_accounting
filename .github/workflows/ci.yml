@@ -9,8 +9,6 @@ on:
     branches: [master]
 
 env:
-  # See: https://github.com/erlef/setup-beam/blob/main/src/setup-beam.js#L406
-  ImageOS: ubuntu20
   LC_CTYPE: 'en_US.UTF-8'
   LANGUAGE: 'en_US.UTF-8'
   MIX_ENV: test
@@ -19,41 +17,41 @@ env:
   LB_ELECTRUM_CLIENT_PORT: 57001
 jobs:
   unit_tests:
-    name: Dependencies
+    name: Unit Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
         elixir: [1.14.1]
         otp: [25.1.1]
 
-      steps:
-        - name: Cancel Previous Runs
-          uses: styfle/cancel-workflow-action@0.11.0
-          with:
-            access_token: ${{ github.token }}
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
 
-        - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-        - name: Setup Elixir 💧
-          uses: erlef/setup-beam@v1
-          with:
-            elixir-version: ${{ matrix.elixir }}
-            otp-version: ${{ matrix.otp }}
+      - name: Setup Elixir 💧
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
 
-        - name: Retrieve Cached Dependencies
-          uses: actions/cache@v2
-          id: mix-cache
-          with:
-            path: |
-              deps
-            key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+      - name: Retrieve Cached Dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            deps
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
 
-        - name: Install dependencies
-          if: steps.mix-cache.outputs.cache-hit != 'true'
-          run: |
-            mix local.rebar --force
-            mix local.hex --force
-            mix deps.get
+      - name: Install dependencies
+        if: steps.mix-cache.outputs.cache-hit != 'true'
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
 
-        - name: Run tests
-          run: mix test_all
+      - name: Run tests
+        run: mix test_all
