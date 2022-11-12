@@ -74,12 +74,13 @@ defmodule BitcoinAccounting.AppleJuice do
       entries:
         Enum.map(rcv.history, fn entry_history ->
           ops = operations(entry_history, rcv.address, changes)
+
           %{
             txid: entry_history.tx_id,
             time: entry_history.time,
             confirmations: entry_history.confirmations,
             operations: ops,
-          fee: fee(ops)
+            fee: fee(ops)
           }
         end)
     }
@@ -99,7 +100,7 @@ defmodule BitcoinAccounting.AppleJuice do
         operation = %{
           direction: :send,
           value: input.value,
-          address: input.address,
+          address: input.address
         }
 
         [operation | acc]
@@ -114,11 +115,12 @@ defmodule BitcoinAccounting.AppleJuice do
     |> Map.get(:outputs)
     |> classify(address)
     |> Enum.reduce([], fn output, acc ->
-      type = if output.address == address or output.address in change_addresses(changes) do
-        :self
-      else
-        :external
-      end
+      type =
+        if output.address == address or output.address in change_addresses(changes) do
+          :self
+        else
+          :external
+        end
 
       operation = %{
         direction: :receive,
@@ -164,8 +166,11 @@ defmodule BitcoinAccounting.AppleJuice do
   end
 
   defp fee(ops) do
-  if Enum.any?(ops, & &1.direction == :send) do
-    Enum.map(ops, & if(&1.direction == :send, do: &1.value * -1, else: &1.value)) |> Enum.sum()
+    if Enum.any?(ops, &(&1.direction == :send)) do
+      ops
+      |> Enum.map(&if(&1.direction == :send, do: &1.value * -1, else: &1.value))
+      |> Enum.sum()
+      |> abs()
     else
       nil
     end

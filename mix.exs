@@ -13,7 +13,11 @@ defmodule BitcoinAccounting.MixProject do
       deps: deps(),
       docs: docs(),
       package: package(),
-      elixirc_paths: elixirc_paths(Mix.env())
+      elixirc_paths: elixirc_paths(Mix.env()),
+      aliases: aliases(),
+      preferred_cli_env: [
+        test_all: :test
+      ]
     ]
   end
 
@@ -49,6 +53,14 @@ defmodule BitcoinAccounting.MixProject do
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
       {:hammox, "~> 0.7", only: [:test]},
       {:electrum_client, "~> 0.1.17"}
+    ]
+  end
+
+  defp aliases() do
+    [
+      compile: ["compile --warning-as-errors"],
+      test: ["test --no-start"],
+      test_all: ["test --no-start --include integration"]
     ]
   end
 
