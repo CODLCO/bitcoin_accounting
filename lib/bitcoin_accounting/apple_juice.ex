@@ -84,16 +84,16 @@ defmodule BitcoinAccounting.AppleJuice do
   end
 
   def operations(entry_history, address, changes) do
-    input_operations(entry_history.transaction, address) ++
+    input_operations(entry_history.transaction, address, changes) ++
       output_operations(entry_history.transaction, address, changes)
   end
 
-  def input_operations(transaction, address) do
+  def input_operations(transaction, address, changes) do
     transaction
     |> extract_inputs()
     |> classify(address)
     |> Enum.reduce([], fn input, acc ->
-      if input.address == address do
+      if input.address == address or input.address in change_addresses(changes) do
         [{:spend, input.value} | acc]
       else
         acc
