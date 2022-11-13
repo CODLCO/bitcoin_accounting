@@ -1,6 +1,5 @@
 defmodule BitcoinAccountingTest do
   use ExUnit.Case, async: false
-  use ExUnit.Case, async: false
 
   setup do
     Application.put_env(:bitcoin_accounting, :electrum_client, ElectrumClient)
