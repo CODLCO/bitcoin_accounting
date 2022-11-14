@@ -55,7 +55,7 @@ defmodule BitcoinAccounting.XpubManager.AddressRange do
       public_key
       |> PublicKey.derive_child!(change_index)
       |> PublicKey.derive_child!(index)
-      |> Address.from_public_key(:bech32, network)
+      |> Address.from_public_key(:p2wpkh, network)
     end)
   end
 
