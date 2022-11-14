@@ -1,10 +1,13 @@
 defmodule BitcoinAccounting.GetBlockEntries.TradeSummary do
+  alias BitcoinAccounting.GetBlockEntries.Fee
+
   def from_entries(entries) do
     entries
     |> group_by_txid
     |> to_summary
     |> add_field(:time)
     |> add_field(:confirmations)
+    |> add_fee
     |> drop_raw_data
     |> sort
   end
@@ -56,6 +59,16 @@ defmodule BitcoinAccounting.GetBlockEntries.TradeSummary do
         |> Map.get(field)
 
       Map.put(summary, field, data)
+    end)
+  end
+
+  defp add_fee(summaries) do
+    summaries
+    |> Enum.map(fn %{txid: txid} = summary ->
+      fee = Fee.from_transaction_id(txid)
+
+      summary
+      |> Map.put(:fee, fee)
     end)
   end
 
