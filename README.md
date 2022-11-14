@@ -21,4 +21,6 @@ be found at <https://hexdocs.pm/bitcoin_accounting>.
 
 ## Testing
 
-Please set `LB_ELECTRUM_CLIENT_IP` and `LB_ELECTRUM_CLIENT_PORT` environment variables with your Electrum server credentials for integration tests to pass.
+## Integration tests
+
+To test lib against real Electrum server please set `LB_ELECTRUM_CLIENT_IP`, `LB_ELECTRUM_CLIENT_PORT` and run `mix test_all`
