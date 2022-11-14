@@ -12,9 +12,6 @@ env:
   LC_CTYPE: 'en_US.UTF-8'
   LANGUAGE: 'en_US.UTF-8'
   MIX_ENV: test
-  # One of https://github.com/spesmilo/electrum/blob/master/electrum/servers.json
-  LB_ELECTRUM_CLIENT_IP: 'blackie.c3-soft.com'
-  LB_ELECTRUM_CLIENT_PORT: 57001
 jobs:
   unit_tests:
     name: Unit Tests
@@ -54,4 +51,4 @@ jobs:
           mix deps.get
 
       - name: Run tests
-        run: mix test_all
+        run: mix test
