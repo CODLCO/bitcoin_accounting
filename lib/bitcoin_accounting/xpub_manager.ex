@@ -1,33 +1,43 @@
 defmodule BitcoinAccounting.XpubManager do
   alias BitcoinAccounting.XpubManager.AddressRange
-  alias BitcoinAccounting.{AddressManager}
+  alias BitcoinAccounting.AddressManager
 
-  def get_receive_entries(xpub, empty_address_request) do
-    get_entries(xpub, [], false, empty_address_request)
+  def entries_for(xpub, gap_limit_stop) do
+    %{
+      change: change_entries(xpub, gap_limit_stop),
+      receive: receive_entries(xpub, gap_limit_stop)
+    }
   end
 
-  def get_change_entries(xpub, empty_address_request) do
-    get_entries(xpub, [], true, empty_address_request)
+  defp change_entries(xpub, gap_limit_stop) do
+    scan(xpub, [], gap_limit_stop, true)
   end
 
-  defp get_entries(xpub, previous_entries, change?, empty_address_request) do
-    previous_entries_count = Enum.count(previous_entries)
+  defp receive_entries(xpub, gap_limit_stop) do
+    scan(xpub, [], gap_limit_stop, false)
+  end
 
-    range = previous_entries_count..(previous_entries_count + empty_address_request - 1)
+  defp scan(xpub, previous_entries, gap_limit_stop, change?) do
+    scanning_range = range_to_scan(previous_entries, gap_limit_stop)
 
     new_entries =
       xpub
-      |> AddressRange.get_address_range(change?, range)
-      |> AddressManager.extract_book_entries()
+      |> AddressRange.get_address_range(change?, scanning_range)
+      |> AddressManager.history_for()
 
     entries = previous_entries ++ new_entries
 
-    needs_more = !Enum.all?(new_entries, &Enum.empty?(&1.history))
+    reached_gap_limit? = Enum.all?(new_entries, &Enum.empty?(&1.history))
 
-    if needs_more do
-      get_entries(xpub, entries, change?, empty_address_request)
-    else
+    if reached_gap_limit? do
       entries
+    else
+      scan(xpub, entries, gap_limit_stop, change?)
     end
+  end
+
+  defp range_to_scan(previous_entries, gap_limit_stop) do
+    previous_entries_count = Enum.count(previous_entries)
+    previous_entries_count..(previous_entries_count + gap_limit_stop - 1)
   end
 end

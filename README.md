@@ -19,3 +19,8 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/bitcoin_accounting>.
 
+## Testing
+
+## Integration tests
+
+To test lib against real Electrum server please set `LB_ELECTRUM_CLIENT_IP`, `LB_ELECTRUM_CLIENT_PORT` and run `mix test_all`
