@@ -3,7 +3,8 @@ defmodule BitcoinAccounting.GetBlockEntries.TradeSummary do
     entries
     |> group_by_txid
     |> to_summary
-    |> get_time
+    |> add_field(:time)
+    |> add_field(:confirmations)
     |> drop_raw_data
     |> sort
   end
@@ -47,14 +48,14 @@ defmodule BitcoinAccounting.GetBlockEntries.TradeSummary do
     credits - debits
   end
 
-  defp get_time(summaries) do
+  defp add_field(summaries, field) do
     summaries
     |> Enum.map(fn summary ->
-      time =
+      data =
         List.first(summary.data)
-        |> Map.get(:time)
+        |> Map.get(field)
 
-      Map.put(summary, :time, time)
+      Map.put(summary, field, data)
     end)
   end
 
