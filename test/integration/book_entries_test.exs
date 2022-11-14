@@ -1,4 +1,4 @@
-defmodule BitcoinAccounting.BitcoinAccountingIntegrationTest do
+defmodule  BitcoinAccounting.Integration.BookEntriesTest do
   use ExUnit.Case, async: false
 
   setup do
@@ -19,7 +19,7 @@ defmodule BitcoinAccounting.BitcoinAccountingIntegrationTest do
     :ok
   end
 
-  describe "get_book_entries/1" do
+  describe "BitcoinAccounting.get_book_entries/1" do
     @tag :integration
     test "returns book entries" do
       entries =
