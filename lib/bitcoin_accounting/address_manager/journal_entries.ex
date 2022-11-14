@@ -87,10 +87,6 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
     Enum.map(inputs, & &1.value)
   end
 
-  defp electrum_client() do
-    Application.get_env(:bitcoin_accounting, :electrum_client)
-  end
-
   defp for_xpub_entry(%{address: address, history: history}) do
     %{
       address: address,
@@ -99,5 +95,9 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
           from_transaction_request(history_item, address)
         end)
     }
+  end
+
+  defp electrum_client() do
+    Application.get_env(:bitcoin_accounting, :electrum_client)
   end
 end
