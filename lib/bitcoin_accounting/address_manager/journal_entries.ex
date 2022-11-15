@@ -9,6 +9,16 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
     }
   end
 
+  defp for_xpub_entry(%{address: address, history: history}) do
+    %{
+      address: address,
+      history:
+        Enum.map(history, fn history_item ->
+          from_transaction_request(history_item, address)
+        end)
+    }
+  end
+
   @spec from_transaction_request(map(), binary()) :: map()
   def from_transaction_request(
         %{
@@ -65,7 +75,7 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
     Map.get(transaction, :outputs)
   end
 
-  defp classify(outputs, address) do
+  def classify(outputs, address) do
     {:ok, _, _key_type, network} = Address.destructure(address)
 
     outputs
@@ -85,16 +95,6 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
 
   defp get_value(inputs) do
     Enum.map(inputs, & &1.value)
-  end
-
-  defp for_xpub_entry(%{address: address, history: history}) do
-    %{
-      address: address,
-      history:
-        Enum.map(history, fn history_item ->
-          from_transaction_request(history_item, address)
-        end)
-    }
   end
 
   defp electrum_client() do

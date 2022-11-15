@@ -1,4 +1,4 @@
-defmodule  BitcoinAccounting.Integration.BookEntriesTest do
+defmodule BitcoinAccounting.Integration.BookEntriesTest do
   use ExUnit.Case, async: false
 
   setup do

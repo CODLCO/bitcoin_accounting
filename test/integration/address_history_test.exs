@@ -1,4 +1,4 @@
-defmodule  BitcoinAccounting.Integration.AddressHistoryTest do
+defmodule BitcoinAccounting.Integration.AddressHistoryTest do
   use ExUnit.Case, async: false
 
   setup do
