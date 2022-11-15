@@ -59,16 +59,7 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
   end
 
   defp extract_inputs(transaction) do
-    transaction
-    |> Map.get(:inputs)
-    |> Enum.map(fn input ->
-      input
-      |> Map.get(:txid)
-      |> electrum_client().get_transaction()
-      |> Map.get(:transaction)
-      |> Map.get(:outputs)
-      |> Enum.at(input.vout)
-    end)
+    Enum.map(transaction.inputs, & &1.vout_details)
   end
 
   defp extract_outputs(transaction) do
@@ -95,9 +86,5 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
 
   defp get_value(inputs) do
     Enum.map(inputs, & &1.value)
-  end
-
-  defp electrum_client() do
-    Application.get_env(:bitcoin_accounting, :electrum_client)
   end
 end
