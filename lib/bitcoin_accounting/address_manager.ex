@@ -1,5 +1,6 @@
 defmodule BitcoinAccounting.AddressManager do
-  alias BitcoinAccounting.AddressManager.JournalEntries
+  alias BitcoinLib.Address
+  alias BitcoinAccounting.AddressManager.JournalEntries.OutputManager
 
   def history_for(address_range) when is_list(address_range) do
     Enum.map(address_range, &history_for/1)
@@ -34,9 +35,23 @@ defmodule BitcoinAccounting.AddressManager do
           |> Map.get(:outputs)
           |> Enum.at(input.vout)
 
-        Map.put(input, :vout_details, hd(JournalEntries.classify([vout], address)))
+        Map.put(input, :vout_details, hd(classify([vout], address)))
       end)
     )
+  end
+
+  def classify(outputs, address) do
+    {:ok, _, _key_type, network} = Address.destructure(address)
+
+    outputs
+    |> Enum.map(fn output ->
+      {script_type, script_value, address} = OutputManager.identify_script_type(output, network)
+
+      output
+      |> Map.put(:script_type, script_type)
+      |> Map.put(:script_value, script_value)
+      |> Map.put(:address, address)
+    end)
   end
 
   defp electrum_client() do

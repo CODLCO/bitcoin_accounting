@@ -1,6 +1,6 @@
 defmodule BitcoinAccounting.AddressManager.JournalEntries do
-  alias BitcoinLib.{Address, Transaction}
-  alias BitcoinAccounting.AddressManager.JournalEntries.OutputManager
+  alias BitcoinLib.Transaction
+  alias BitcoinAccounting.AddressManager
 
   def for_xpub(entries) do
     %{
@@ -45,7 +45,7 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
   defp get_debits(transaction, address) do
     transaction
     |> extract_inputs()
-    |> classify(address)
+    |> AddressManager.classify(address)
     |> filter_address(address)
     |> get_value()
   end
@@ -53,7 +53,7 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
   defp get_credits(transaction, address) do
     transaction
     |> extract_outputs()
-    |> classify(address)
+    |> AddressManager.classify(address)
     |> filter_address(address)
     |> get_value()
   end
@@ -64,20 +64,6 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries do
 
   defp extract_outputs(transaction) do
     Map.get(transaction, :outputs)
-  end
-
-  def classify(outputs, address) do
-    {:ok, _, _key_type, network} = Address.destructure(address)
-
-    outputs
-    |> Enum.map(fn output ->
-      {script_type, script_value, address} = OutputManager.identify_script_type(output, network)
-
-      output
-      |> Map.put(:script_type, script_type)
-      |> Map.put(:script_value, script_value)
-      |> Map.put(:address, address)
-    end)
   end
 
   defp filter_address(inputs, address) do

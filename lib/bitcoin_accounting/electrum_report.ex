@@ -1,6 +1,6 @@
 defmodule BitcoinAccounting.ElectrumReport do
   alias BitcoinAccounting.XpubManager
-  alias BitcoinAccounting.AddressManager.JournalEntries
+  alias BitcoinAccounting.AddressManager
 
   def for(xpub, gap_limit_stop \\ 20) do
     %{change: changes, receive: receives} = XpubManager.entries_for(xpub, gap_limit_stop)
@@ -8,7 +8,7 @@ defmodule BitcoinAccounting.ElectrumReport do
     Enum.map(receives, fn rcv -> to_entries(rcv, receives, changes) end)
   end
 
-  def to_entries(rcv, receives, changes) do
+  defp to_entries(rcv, receives, changes) do
     %{
       address: rcv.address,
       entries:
@@ -36,7 +36,7 @@ defmodule BitcoinAccounting.ElectrumReport do
     transaction
     |> Map.get(:inputs)
     |> then(fn inputs ->
-      Enum.map(inputs, &{&1, hd(JournalEntries.classify([&1.vout_details], address))})
+      Enum.map(inputs, &{&1, hd(AddressManager.classify([&1.vout_details], address))})
     end)
     |> Enum.reduce([], fn {_input, output}, acc ->
       operation = %{
@@ -53,7 +53,7 @@ defmodule BitcoinAccounting.ElectrumReport do
   def output_operations(transaction, address, changes) do
     transaction
     |> Map.get(:outputs)
-    |> JournalEntries.classify(address)
+    |> AddressManager.classify(address)
     |> Enum.reduce([], fn output, acc ->
       operation = %{
         direction: :receive,
