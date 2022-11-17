@@ -123,7 +123,7 @@ defmodule BitcoinAccounting.ElectrumReporterTest do
                        value: 8800
                      },
                      %{
-                       address: "Ba2CccgoJ1W2DqtLpSux9qWk3y9Fj3u3gz2yvSd3kK8RZ1SbZ9",
+                       address: "bc1qdlcyqx907w7nyryfut5vn4p8fe4su7qfwhxnvjqsyw0vc77czw9q6d8zkl",
                        direction: :receive,
                        type: :external,
                        value: 6000

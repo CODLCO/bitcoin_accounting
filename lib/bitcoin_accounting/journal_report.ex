@@ -2,14 +2,14 @@ defmodule BitcoinAccounting.JournalReport do
   alias BitcoinLib.Transaction
   alias BitcoinAccounting.AddressManager
 
-  def for_xpub(entries) do
+  def from_entries(entries) do
     %{
-      change: Enum.map(entries.change, &for_xpub_entry/1),
-      receive: Enum.map(entries.receive, &for_xpub_entry/1)
+      change: Enum.map(entries.change, &from_address_entry/1),
+      receive: Enum.map(entries.receive, &from_address_entry/1)
     }
   end
 
-  defp for_xpub_entry(%{address: address, history: history}) do
+  defp from_address_entry(%{address: address, history: history}) do
     %{
       address: address,
       history:

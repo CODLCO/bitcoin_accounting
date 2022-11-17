@@ -27,12 +27,12 @@ defmodule BitcoinAccounting.ElectrumReport do
     }
   end
 
-  def operations(entry_history, address, changes) do
+  defp operations(entry_history, address, changes) do
     input_operations(entry_history.transaction, address, changes) ++
       output_operations(entry_history.transaction, address, changes)
   end
 
-  def input_operations(transaction, address, changes) do
+  defp input_operations(transaction, address, changes) do
     transaction
     |> Map.get(:inputs)
     |> then(fn inputs ->
@@ -50,7 +50,7 @@ defmodule BitcoinAccounting.ElectrumReport do
     end)
   end
 
-  def output_operations(transaction, address, changes) do
+  defp output_operations(transaction, address, changes) do
     transaction
     |> Map.get(:outputs)
     |> AddressManager.classify(address)
@@ -66,7 +66,7 @@ defmodule BitcoinAccounting.ElectrumReport do
     end)
   end
 
-  def operation_type(output, changes, address) do
+  defp operation_type(output, changes, address) do
     if output.address == address or output.address in addresses_in(changes) do
       :self
     else
@@ -74,7 +74,7 @@ defmodule BitcoinAccounting.ElectrumReport do
     end
   end
 
-  def sent_by(entry_history, receives, changes) do
+  defp sent_by(entry_history, receives, changes) do
     sender_addresses = Enum.map(entry_history.transaction.inputs, & &1.vout_details.address)
 
     my_inputs =

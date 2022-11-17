@@ -9,7 +9,7 @@ defmodule BitcoinAccounting do
 
     xpub
     |> XpubManager.entries_for(gap_limit_stop)
-    |> JournalReport.for_xpub()
+    |> JournalReport.from_entries()
   end
 
   def get_address_history(address) do
