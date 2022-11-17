@@ -1,6 +1,6 @@
 defmodule BitcoinAccounting.AddressManager do
   alias BitcoinLib.Address
-  alias BitcoinAccounting.AddressManager.JournalEntries.OutputManager
+  alias BitcoinAccounting.AddressManager.OutputManager
 
   def history_for(address_range) when is_list(address_range) do
     Enum.map(address_range, &history_for/1)

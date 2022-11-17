@@ -1,4 +1,4 @@
-defmodule BitcoinAccounting.AddressManager.JournalEntries.OutputManager do
+defmodule BitcoinAccounting.AddressManager.OutputManager do
   require Logger
 
   alias BitcoinLib.{Address, Script}
@@ -39,7 +39,7 @@ defmodule BitcoinAccounting.AddressManager.JournalEntries.OutputManager do
   defp add_address({:p2wsh, script_hash}, network) do
     address =
       script_hash
-      |> Address.P2SH.from_script_hash(network)
+      |> Address.P2WSH.from_script_hash(network)
 
     {:p2wsh, script_hash, address}
   end

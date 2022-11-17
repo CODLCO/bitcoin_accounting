@@ -1,4 +1,4 @@
-defmodule BitcoinAccounting.AddressManager.JournalEntries do
+defmodule BitcoinAccounting.JournalReport do
   alias BitcoinLib.Transaction
   alias BitcoinAccounting.AddressManager
 

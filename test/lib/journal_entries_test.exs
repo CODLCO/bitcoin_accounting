@@ -1,13 +1,13 @@
-defmodule BitcoinAccounting.AddressManager.JournalEntriesTest do
+defmodule BitcoinAccounting.JournalReportTest do
   use ExUnit.Case, async: false
   import Hammox
-  alias BitcoinAccounting.AddressManager.JournalEntries
+  alias BitcoinAccounting.JournalReport
 
   setup :verify_on_exit!
 
   describe "from_transaction_request/2" do
     test "calculate debits" do
-      assert JournalEntries.from_transaction_request(transaction_fixture(), "12CL4K2eVqj7hQTix7dM7CVHCkpP17Pry3") == %{
+      assert JournalReport.from_transaction_request(transaction_fixture(), "12CL4K2eVqj7hQTix7dM7CVHCkpP17Pry3") == %{
                confirmations: 396_000,
                credits: [],
                debits: [17936],

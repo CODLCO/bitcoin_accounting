@@ -8,7 +8,7 @@ defmodule BitcoinAccounting.Integration.BookEntriesTest do
       Application.put_env(:bitcoin_accounting, :electrum_client, ElectrumClientMock)
     end)
 
-    ip = System.fetch_env!("LB_ELECTRUM_CLIENT_IP")
+    ip = System.fetch_env!("LB_ELECTRUM_CLIENT_IP") |> IO.inspect()
     port = System.fetch_env!("LB_ELECTRUM_CLIENT_PORT") |> Integer.parse() |> elem(0)
 
     start_supervised!(%{
