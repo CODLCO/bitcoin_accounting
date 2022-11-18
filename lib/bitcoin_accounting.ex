@@ -1,6 +1,6 @@
 defmodule BitcoinAccounting do
   alias BitcoinAccounting.{AddressManager, XpubManager}
-  alias BitcoinAccounting.AddressManager.JournalEntries
+  alias BitcoinAccounting.JournalReport
   @get_book_entries_defaults %{gap_limit_stop: 20}
 
   @spec get_book_entries(binary(), list()) :: %{receive: list(), change: list()}
@@ -9,7 +9,7 @@ defmodule BitcoinAccounting do
 
     xpub
     |> XpubManager.entries_for(gap_limit_stop)
-    |> JournalEntries.for_xpub()
+    |> JournalReport.from_entries()
   end
 
   def get_address_history(address) do
@@ -17,7 +17,7 @@ defmodule BitcoinAccounting do
     |> AddressManager.history_for()
     |> Map.get(:history)
     |> Enum.map(fn history_item ->
-      JournalEntries.from_transaction_request(history_item, address)
+      JournalReport.from_transaction_request(history_item, address)
     end)
   end
 end
