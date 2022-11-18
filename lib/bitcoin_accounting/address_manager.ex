@@ -11,10 +11,10 @@ defmodule BitcoinAccounting.AddressManager do
       address
       |> electrum_client().get_address_history()
       |> Enum.map(fn %{txid: transaction_id} ->
-          transaction_id
-          |> electrum_client().get_transaction()
-          |> Map.put(:tx_id, transaction_id)
-          |> add_vouts_to_transaction_inputs(address)
+        transaction_id
+        |> electrum_client().get_transaction()
+        |> Map.put(:tx_id, transaction_id)
+        |> add_vouts_to_transaction_inputs(address)
       end)
 
     %{address: address, history: history}
