@@ -9,9 +9,11 @@ defmodule BitcoinAccounting.JournalReport do
     }
   end
 
-  defp from_address_entry(%{address: address, history: history}) do
+  defp from_address_entry(%{address: address, change?: change?, index: index, history: history}) do
     %{
       address: address,
+      change?: change?,
+      index: index,
       history:
         Enum.map(history, fn history_item ->
           from_transaction_request(history_item, address)

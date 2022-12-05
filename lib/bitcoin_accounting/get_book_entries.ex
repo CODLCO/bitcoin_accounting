@@ -31,6 +31,8 @@ defmodule BitcoinAccounting.GetBookEntries do
       history
       |> Map.put(:type, receive_or_change)
       |> Map.put(:address, entry.address)
+      |> Map.put(:change?, entry.change?)
+      |> Map.put(:index, entry.index)
     end)
   end
 end
