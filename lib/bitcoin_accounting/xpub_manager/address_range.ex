@@ -32,6 +32,7 @@ defmodule BitcoinAccounting.XpubManager.AddressRange do
       |> PublicKey.derive_child!(change_index)
       |> PublicKey.derive_child!(index)
       |> Address.from_public_key(:p2pkh, network)
+      |> format(change?, index)
     end)
   end
 
@@ -66,5 +67,13 @@ defmodule BitcoinAccounting.XpubManager.AddressRange do
           true -> 1
           false -> 0
         )
+  end
+
+  defp format(address, change?, index) do
+    %{
+      address: address,
+      change?: change?,
+      index: index
+    }
   end
 end

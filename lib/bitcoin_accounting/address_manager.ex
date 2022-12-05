@@ -6,7 +6,13 @@ defmodule BitcoinAccounting.AddressManager do
     Enum.map(address_range, &history_for/1)
   end
 
-  def history_for(address) when is_binary(address) do
+  def history_for(%{address: address, change?: change?, index: index}) do
+    history_for(address)
+    |> Map.put(:change?, change?)
+    |> Map.put(:index, index)
+  end
+
+  def history_for(address) do
     history =
       address
       |> electrum_client().get_address_history()
