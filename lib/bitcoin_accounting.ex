@@ -20,4 +20,8 @@ defmodule BitcoinAccounting do
       JournalReport.from_transaction_request(history_item, address)
     end)
   end
+
+  def get_utxos(xpub) do
+    
+  end
 end
