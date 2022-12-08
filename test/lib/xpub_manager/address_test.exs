@@ -25,4 +25,12 @@ defmodule BitcoinAccounting.XpubManager.AddressTest do
 
     assert {:error, "the index must not be a negative integer"} = result
   end
+
+  test "attempt to get an address from an invalid xpub" do
+    xpub = "abc"
+
+    result = Address.from_xpub(xpub, @receive, 0)
+
+    assert {:error, "unknown pub key serialization format"} = result
+  end
 end

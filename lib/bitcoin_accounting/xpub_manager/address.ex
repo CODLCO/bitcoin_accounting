@@ -16,10 +16,7 @@ defmodule BitcoinAccounting.XpubManager.Address do
         get_address(public_key, network, :p2wpkh, change?, index)
 
       {:error, message} ->
-        Logger.error(message)
-
-      unknown ->
-        Logger.error(unknown |> inspect)
+        {:error, message}
     end
   end
 
