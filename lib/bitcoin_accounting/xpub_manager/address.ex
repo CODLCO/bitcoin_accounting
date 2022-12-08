@@ -23,12 +23,17 @@ defmodule BitcoinAccounting.XpubManager.Address do
     end
   end
 
+  defp get_address(_, _, _, _, index) when index < 0, do: {:error, "the index must not be a negative integer"}
+
   defp get_address(public_key, network, type, change?, index) do
-    public_key
-    |> PublicKey.derive_child!(get_change_id(change?))
-    |> PublicKey.derive_child!(index)
-    |> Address.from_public_key(type, network)
-    |> format(change?, index)
+    with {:ok, change_public_key} <- PublicKey.derive_child(public_key, get_change_id(change?)),
+         {:ok, index_public_key} <- PublicKey.derive_child(change_public_key, index) do
+      index_public_key
+      |> Address.from_public_key(type, network)
+      |> format(change?, index)
+    else
+      {:error, message} -> {:error, message}
+    end
   end
 
   defp get_change_id(true), do: 1
