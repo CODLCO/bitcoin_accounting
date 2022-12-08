@@ -37,7 +37,7 @@ defmodule BitcoinAccounting do
   defp remove_empty_addresses(addresses_with_utxos) do
     addresses_with_utxos
     |> Enum.filter(fn {_address_info, utxo_list} ->
-      Enum.count(utxo_list) > 0
+      !Enum.empty?(utxo_list)
     end)
   end
 end
