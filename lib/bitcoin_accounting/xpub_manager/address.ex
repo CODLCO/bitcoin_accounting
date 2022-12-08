@@ -15,6 +15,9 @@ defmodule BitcoinAccounting.XpubManager.Address do
       {:ok, public_key, network, :bip84} ->
         get_address(public_key, network, :p2wpkh, change?, index)
 
+      {:ok, _, _, key_type} ->
+        {:error, "trying to deserialize an xpub with an unknown key type: #{key_type}"}
+
       {:error, message} ->
         {:error, message}
     end
