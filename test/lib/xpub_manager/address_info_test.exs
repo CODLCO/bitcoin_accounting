@@ -13,13 +13,13 @@ defmodule BitcoinAccounting.XpubManager.AddressInfoTest do
   test "get the first receive address from an xpub" do
     {:ok, address} = AddressInfo.from_xpub(@xpub, @receive, 0)
 
-    assert %{address: "mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L", change?: false, index: 0} == address
+    assert %AddressInfo{address: "mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L", change?: false, index: 0} == address
   end
 
   test "get the second change address from an xpub" do
     {:ok, address} = AddressInfo.from_xpub(@xpub, @change, 1)
 
-    assert %{address: "mfjtqTDHvxHNVqE8RAKVjaQawCyqqxMgV8", change?: true, index: 1} == address
+    assert %AddressInfo{address: "mfjtqTDHvxHNVqE8RAKVjaQawCyqqxMgV8", change?: true, index: 1} == address
   end
 
   test "attempt to get an address with a negative index" do

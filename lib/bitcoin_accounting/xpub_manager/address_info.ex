@@ -7,6 +7,7 @@ defmodule BitcoinAccounting.XpubManager.AddressInfo do
 
   alias BitcoinLib.Address
   alias BitcoinLib.Key.{PublicKey}
+  alias BitcoinAccounting.XpubManager.AddressInfo
 
   require Logger
 
@@ -19,7 +20,7 @@ defmodule BitcoinAccounting.XpubManager.AddressInfo do
       ...> |> BitcoinAccounting.XpubManager.AddressInfo.from_xpub(false, 0)
       {
         :ok,
-        %{address: "mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L", change?: false, index: 0}
+        %AddressInfo{address: "mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L", change?: false, index: 0}
       }
   """
   def from_xpub(xpub, change?, index) do
@@ -61,7 +62,7 @@ defmodule BitcoinAccounting.XpubManager.AddressInfo do
   defp get_change_id(false), do: 0
 
   defp format(address, change?, index) do
-    %{
+    %AddressInfo{
       address: address,
       change?: change?,
       index: index
