@@ -1,7 +1,10 @@
 defmodule BitcoinAccounting do
   alias BitcoinAccounting.{AddressManager, XpubManager}
   alias BitcoinAccounting.JournalReport
-  @get_book_entries_defaults %{gap_limit_stop: 20}
+
+  @change? true
+  @gap_limit 20
+  @get_book_entries_defaults %{gap_limit_stop: @gap_limit}
 
   @spec get_book_entries(binary(), list()) :: %{receive: list(), change: list()}
   def get_book_entries(xpub, opts \\ []) do
@@ -22,6 +25,28 @@ defmodule BitcoinAccounting do
   end
 
   def get_utxos(xpub) do
-    
+    xpub
+    |> XpubManager.map_addresses(!@change?, fn address, empties ->
+      case ElectrumClient.list_unspent(address) do
+        [] ->
+          if empties < @gap_limit do
+            {:continue, nil, empties + 1}
+          else
+            {:stop}
+          end
+
+        utxos ->
+          {:continue, utxos, 0}
+      end
+    end)
+    |> IO.inspect()
   end
+
+  # defp load_transactions(utxos) do
+  #   utxos
+  #   |> Enum.map(fn utxo = %{transaction_id: txid} ->
+  #     IO.inspect(txid)
+  #     %{utxo | transaction: ElectrumClient.get_transaction(txid)}
+  #   end)
+  # end
 end

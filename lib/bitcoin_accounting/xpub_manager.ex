@@ -9,6 +9,10 @@ defmodule BitcoinAccounting.XpubManager do
     }
   end
 
+  def map_addresses(xpub, change?, deal_with_address) do
+    ### TODO: 
+  end
+
   defp change_entries(xpub, gap_limit_stop) do
     scan(xpub, [], gap_limit_stop, true)
   end
