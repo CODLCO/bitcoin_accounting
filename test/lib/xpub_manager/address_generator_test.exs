@@ -17,4 +17,27 @@ defmodule BitcoinAccounting.XpubManager.AddressGeneratorTest do
 
     assert 4 = Enum.count(result)
   end
+
+  test "test returning self with gap limit of one" do
+    gap_limit = 1
+
+    result =
+      AddressGenerator.until_gap(@xpub, gap_limit, fn %AddressInfo{address: address} ->
+        get_data(address)
+      end)
+
+    assert [
+             {%AddressInfo{address: "mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L"}, ["mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L"]},
+             {%AddressInfo{address: "myM8AfdxbgYyHnawSXwyfWC2zC9ZK4MhMW"}, []},
+             {%AddressInfo{address: "mvyJx7fu7Xgi5ESqk1EjMxZ19cwdSD1tWC"}, ["mvyJx7fu7Xgi5ESqk1EjMxZ19cwdSD1tWC"]},
+             {%AddressInfo{address: "mfjtqTDHvxHNVqE8RAKVjaQawCyqqxMgV8"}, []}
+           ] = result
+  end
+
+  defp get_data("mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L"), do: ["mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L"]
+  defp get_data("myM8AfdxbgYyHnawSXwyfWC2zC9ZK4MhMW"), do: []
+  defp get_data("msrNQRYrHbv86vLPcMxTT3NEuHfSgHmdmy"), do: []
+  defp get_data("mvyJx7fu7Xgi5ESqk1EjMxZ19cwdSD1tWC"), do: ["mvyJx7fu7Xgi5ESqk1EjMxZ19cwdSD1tWC"]
+  defp get_data("mfjtqTDHvxHNVqE8RAKVjaQawCyqqxMgV8"), do: []
+  defp get_data("mnwWzsQ4a15kNjDB5cRD66A7m5sKSrU2kd"), do: []
 end

@@ -40,6 +40,7 @@ defmodule BitcoinAccounting.XpubManager.AddressGenerator do
   defp loop(%State{counter: {empty_count, gap_limit}, accumulator: accumulator})
        when empty_count == gap_limit do
     accumulator
+    |> Enum.reverse()
   end
 
   defp loop(%State{counter: {empty_count, gap_limit}, current_index: index} = state) do
