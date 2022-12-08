@@ -28,9 +28,12 @@ defmodule BitcoinAccounting.XpubManager.Address do
   defp get_address(public_key, network, type, change?, index) do
     with {:ok, change_public_key} <- PublicKey.derive_child(public_key, get_change_id(change?)),
          {:ok, index_public_key} <- PublicKey.derive_child(change_public_key, index) do
-      index_public_key
-      |> Address.from_public_key(type, network)
-      |> format(change?, index)
+      address =
+        index_public_key
+        |> Address.from_public_key(type, network)
+        |> format(change?, index)
+
+      {:ok, address}
     else
       {:error, message} -> {:error, message}
     end
