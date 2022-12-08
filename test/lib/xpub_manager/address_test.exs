@@ -3,6 +3,8 @@ defmodule BitcoinAccounting.XpubManager.AddressTest do
 
   alias BitcoinAccounting.XpubManager.Address
 
+  doctest Address
+
   @receive false
   @change true
 

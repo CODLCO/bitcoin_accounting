@@ -1,9 +1,25 @@
 defmodule BitcoinAccounting.XpubManager.Address do
+  @moduledoc """
+  Converts an xpub into an address
+  """
+
   alias BitcoinLib.Address
   alias BitcoinLib.Key.{PublicKey}
 
   require Logger
 
+  @doc """
+  Converts an xpub into an address
+
+  ## Examples
+
+      iex> "tpubDDJMFT1RGo7pAQxLSFSawLMBJGVizgq4Ny9hYmHWJCYTDW6JsGu3ZqU1RBVPJFhMJjr44fcdeny3uRjQmtUsH1dtuTQG9Ni29AHGwYK56Zq"
+      ...> |> BitcoinAccounting.XpubManager.Address.from_xpub(false, 0)
+      {
+        :ok,
+        %{address: "mwYKDe7uJcgqyVHJAPURddeZvM5zBVQj5L", change?: false, index: 0}
+      }
+  """
   def from_xpub(xpub, change?, index) do
     case PublicKey.deserialize(xpub) do
       {:ok, public_key, network, :bip32} ->
