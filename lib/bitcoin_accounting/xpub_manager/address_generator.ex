@@ -14,8 +14,10 @@ defmodule BitcoinAccounting.XpubManager.AddressGenerator do
   alias BitcoinAccounting.XpubManager.AddressGenerator.State
 
   @doc """
-  Loops on an xpub to create addresses up until a certain threshold is met
+  Loops on an xpub to create addresses up until a certain threshold is met,
+  executing the manage_address function for each address in the process
   """
+  @spec until_gap(binary(), integer(), function()) :: list({%AddressInfo{}, list()})
   def until_gap(xpub, gap_limit, manage_address) do
     [@receive, @change]
     |> Enum.map(&loop(xpub, &1, gap_limit, manage_address))
